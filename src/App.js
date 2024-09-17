@@ -4,7 +4,7 @@ import Header from './components/Header/Header';
 import Hero from './components/Hero/Hero';
 
 function App() {
-  const allCountries = [
+  const initialCountries = [
     {
       id: 1,
       name: "Wallis and Futuna",
@@ -96,17 +96,19 @@ function App() {
       isBasket: false
     }
   ]
-  const [countries, setCountries] = useState(allCountries)
+
+  const [allCountries, setAllCountries] = useState(initialCountries);
+
+  const [countries, setCountries] = useState(initialCountries)
   const [isLoading, setIsLoading] = useState(false)
   const [openModal, setOpenModal] = useState(false)
 
 
-
   return (
     <>
-    <Header countries={countries} setCountries={setCountries} setIsLoading={setIsLoading} openModal={openModal} setOpenModal={setOpenModal}/>
+    <Header setAllCountries={setAllCountries} countries={countries} setCountries={setCountries} setIsLoading={setIsLoading} openModal={openModal} setOpenModal={setOpenModal}/>
     <main>
-      <Hero allCountries={allCountries} countries={countries} setCountries={setCountries} isLoading={isLoading} setIsLoading={setIsLoading} setOpenModal={setOpenModal} openModal={openModal}/>
+      <Hero setAllCountries={setAllCountries} allCountries={allCountries} countries={countries} setCountries={setCountries} isLoading={isLoading} setIsLoading={setIsLoading} openModal={openModal} setOpenModal={setOpenModal}/>
     </main>
 
   </>

@@ -3,12 +3,12 @@ import { useState } from "react"
 import Modal from "../Modal"
 import emptyImg from '../../assets/images/empty.jpg'
 import Button from "../Button"
+import toast, { Toaster } from "react-hot-toast"
 
-function Header({countries, setCountries, setIsLoading,openModal, setOpenModal}) {
+function Header({ countries, setCountries, setIsLoading, openModal, setOpenModal, setAllCountries }) {
     function DarkMode() {
         document.documentElement.classList.toggle("dark")
     }
-
 
     const [flag, setFlag] = useState(emptyImg)
 
@@ -17,10 +17,15 @@ function Header({countries, setCountries, setIsLoading,openModal, setOpenModal})
     const [population, setPopulation] = useState("")
 
     function handleCancel() {
-        setFlag(flag)
-        setName(name)
-        setCapital(capital)
-        setPopulation(population)
+        console.log("cancel");
+        console.log("Current state:", { flag, name, capital, population });
+
+        toast.error("You didn't add a country")
+        
+        setFlag(emptyImg)
+        setName("")
+        setCapital("")
+        setPopulation("")
         setOpenModal(false)
     }
 
@@ -38,21 +43,27 @@ function Header({countries, setCountries, setIsLoading,openModal, setOpenModal})
         }
         setIsLoading(true)
         setOpenModal(false)
-        
+
         setTimeout(() => {
-            setCountries([data, ...countries])
+            setCountries(prevCountries => [data, ...prevCountries]);
+            setAllCountries(prevCountries => [data, ...prevCountries]);
+            toast.success('You have successfully added a new country')
             setIsLoading(false)
 
-            setFlag(flag)
+            setFlag(emptyImg)
             setName("")
             setCapital("")
             setPopulation("")
         }, 1000)
-        
+
     }
 
     return (
         <>
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+            />
             <header className="py-[23px] px-[80px] mx-auto bg-white dark:text-white dark:bg-[#2B3844]  shadow-lg dark:shadow-lg">
                 <div className="mx-auto w-[1280px] flex items-center justify-between">
                     <h1 className="text-[24px] leading-[32px] font-bold">Where in the world?</h1>
@@ -76,9 +87,9 @@ function Header({countries, setCountries, setIsLoading,openModal, setOpenModal})
                             <input onChange={(e) => setFlag(URL.createObjectURL(e.target.files[0]))} className="hidden" type="file" name="choosenimg" />
                         </label>
                         <div className="w-[49%] space-y-4">
-                            <input onChange={(e) => setName(e.target.value)} required className="p-2 text-lg w-full outline-none rounded-lg border border-slate-600 dark:bg-[#2B3844] dark:text-white" type="text" placeholder="Enter a country name" name="name" />
-                            <input onChange={(e) => setCapital(e.target.value)} required className="p-2 text-lg w-full outline-none rounded-lg border border-slate-600 dark:bg-[#2B3844] dark:text-white" type="text" placeholder="Enter a country capital" name="capital" />
-                            <input onChange={(e) => setPopulation(e.target.value)} required className="p-2 text-lg w-full outline-none rounded-lg border border-slate-600 dark:bg-[#2B3844] dark:text-white" type="number" placeholder="Enter a country population" name="population" />
+                            <input value={name} onChange={(e) => setName(e.target.value)} required className="p-2 text-lg w-full outline-none rounded-lg border border-slate-600 dark:bg-[#2B3844] dark:text-white" type="text" placeholder="Enter a country name" name="name" />
+                            <input value={capital} onChange={(e) => setCapital(e.target.value)} required className="p-2 text-lg w-full outline-none rounded-lg border border-slate-600 dark:bg-[#2B3844] dark:text-white" type="text" placeholder="Enter a country capital" name="capital" />
+                            <input value={population} onChange={(e) => setPopulation(e.target.value)} required className="p-2 text-lg w-full outline-none rounded-lg border border-slate-600 dark:bg-[#2B3844] dark:text-white" type="number" placeholder="Enter a country population" name="population" />
                         </div>
                     </div>
                     <div className="flex items-center justify-end space-x-2 mt-6">
