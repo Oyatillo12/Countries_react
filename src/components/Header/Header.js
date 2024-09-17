@@ -8,6 +8,7 @@ import toast, { Toaster } from "react-hot-toast"
 function Header({ countries, setCountries, setIsLoading, openModal, setOpenModal, setAllCountries }) {
     function DarkMode() {
         document.documentElement.classList.toggle("dark")
+        document.documentElement.lastElementChild.classList.toggle("black")
     }
 
     const [flag, setFlag] = useState(emptyImg)
